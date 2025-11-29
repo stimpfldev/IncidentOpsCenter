@@ -80,3 +80,9 @@ Devuelve la lista de incidentes (DTO de lectura):
   },
   ...
 ]
+## Tests
+
+Para ejecutar todos los tests:
+
+```bash
+dotnet test
