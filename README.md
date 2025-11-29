@@ -10,7 +10,7 @@ La solución está separada en capas siguiendo un estilo **clean-ish architectur
 - `IncidentOpsCenter.Infrastructure` – EF Core (InMemory provider, easily swappable to SQL Server), DbContext, servicios concretos
 - `IncidentOpsCenter.Tests` – (reservado para tests de unidad/integración)
 
-> 🚀 **Objetivo**: Diseño de API .NET 8, separación de capas, EF Core, AutoMapper y patrones de aplicación para entornos de producción.
+>  **Objetivo**: Diseño de API .NET 8, separación de capas, EF Core, AutoMapper y patrones de aplicación para entornos de producción.
 
 ---
 
