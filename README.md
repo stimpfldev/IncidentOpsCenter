@@ -7,7 +7,7 @@ La solución está separada en capas siguiendo un estilo **clean-ish architectur
 - `IncidentOpsCenter.Api` – ASP.NET Core Web API (.NET 8)
 - `IncidentOpsCenter.Application` – DTOs, interfaces de servicios y perfiles de mapeo
 - `IncidentOpsCenter.Domain` – Entidades de dominio y enums (reglas de negocio)
-- `IncidentOpsCenter.Infrastructure` – EF Core, DbContext, servicios concretos
+- `IncidentOpsCenter.Infrastructure` – EF Core (InMemory provider, easily swappable to SQL Server), DbContext, servicios concretos
 - `IncidentOpsCenter.Tests` – (reservado para tests de unidad/integración)
 
 > 🚀 **Objetivo**: mostrar experiencia real en diseño de APIs .NET 8, separación de capas, EF Core, AutoMapper y patrones de aplicación usados en entornos de producción.
