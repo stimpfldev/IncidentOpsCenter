@@ -28,7 +28,6 @@ namespace IncidentOpsCenter.Application.DTOs.Incidents
         [MaxLength(100)]
         public string ReportedBy { get; set; } = string.Empty;
 
-        // Estos son enums del dominio
         [Required]
         public IncidentSeverity Severity { get; set; }
 
@@ -37,7 +36,6 @@ namespace IncidentOpsCenter.Application.DTOs.Incidents
 
         public bool IsMajor { get; set; } = false;
 
-        // Opcional: se puede setear o dejar null
         [MaxLength(100)]
         public string? AssignedTo { get; set; }
     }

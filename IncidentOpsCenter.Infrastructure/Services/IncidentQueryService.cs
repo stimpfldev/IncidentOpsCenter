@@ -10,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IncidentOpsCenter.Infrastructure.Services
 {
+    /// <summary>
+    /// Implementación del servicio de consulta de incidentes usando EF Core.
+    /// </summary>
     public class IncidentQueryService : IIncidentQueryService
     {
         private readonly IncidentOpsCenterDbContext _db;
@@ -31,10 +34,8 @@ namespace IncidentOpsCenter.Infrastructure.Services
                 .ToListAsync();
         }
 
-        // Nuevo: obtener un incidente por su IncidentNumber
         public async Task<IncidentReadDto?> GetByIncidentNumberAsync(string incidentNumber)
         {
-            // Usamos ProjectTo para que siga siendo traducible a SQL en el futuro
             return await _db.Incidents
                 .Where(i => i.IncidentNumber == incidentNumber)
                 .ProjectTo<IncidentReadDto>(_mapper.ConfigurationProvider)

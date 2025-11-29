@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using IncidentOpsCenter.Application.DTOs.Incidents;
@@ -9,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IncidentOpsCenter.Infrastructure.Services
 {
+    /// <summary>
+    /// Implementación de comandos sobre incidentes (crear, actualizar estado, asignar).
+    /// </summary>
     public class IncidentCommandService : IIncidentCommandService
     {
         private readonly IncidentOpsCenterDbContext _db;
@@ -40,9 +44,49 @@ namespace IncidentOpsCenter.Infrastructure.Services
                 isMajor: dto.IsMajor
             );
 
-            incident.AssignedTo = dto.AssignedTo;
+            incident.AssignTo(dto.AssignedTo);
 
             _db.Incidents.Add(incident);
+            await _db.SaveChangesAsync(cancellationToken);
+
+            return _mapper.Map<IncidentReadDto>(incident);
+        }
+
+        public async Task<IncidentReadDto?> UpdateStatusAsync(
+            string incidentNumber,
+            IncidentStatusUpdateDto dto,
+            CancellationToken cancellationToken = default)
+        {
+            var incident = await _db.Incidents
+                .SingleOrDefaultAsync(i => i.IncidentNumber == incidentNumber, cancellationToken);
+
+            if (incident is null)
+            {
+                return null;
+            }
+
+            incident.ChangeStatus(dto.NewStatus);
+
+            await _db.SaveChangesAsync(cancellationToken);
+
+            return _mapper.Map<IncidentReadDto>(incident);
+        }
+
+        public async Task<IncidentReadDto?> AssignAsync(
+            string incidentNumber,
+            IncidentAssignDto dto,
+            CancellationToken cancellationToken = default)
+        {
+            var incident = await _db.Incidents
+                .SingleOrDefaultAsync(i => i.IncidentNumber == incidentNumber, cancellationToken);
+
+            if (incident is null)
+            {
+                return null;
+            }
+
+            incident.AssignTo(dto.Engineer);
+
             await _db.SaveChangesAsync(cancellationToken);
 
             return _mapper.Map<IncidentReadDto>(incident);

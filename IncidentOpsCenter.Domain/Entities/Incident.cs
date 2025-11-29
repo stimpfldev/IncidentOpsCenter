@@ -5,14 +5,14 @@ namespace IncidentOpsCenter.Domain.Entities
 {
     /// <summary>
     /// Representa un incidente de soporte L2/L3 en producción.
-    /// Esta será la entidad central del dominio.
+    /// Entidad central del dominio.
     /// </summary>
     public class Incident
     {
         // Id interno de la entidad (clave primaria en la base de datos)
         public Guid Id { get; set; }
 
-        // Identificador "visible" para el negocio, tipo INC-000123
+        // Identificador "visible" para el negocio, tipo INC-0001
         public string IncidentNumber { get; set; } = string.Empty;
 
         // Título corto que describa el problema
@@ -51,7 +51,9 @@ namespace IncidentOpsCenter.Domain.Entities
         // Indicador de si el incidente fue considerado "Major Incident"
         public bool IsMajor { get; set; }
 
-        // Constructor de conveniencia para crear un incidente nuevo
+        /// <summary>
+        /// Factory de conveniencia para crear un incidente nuevo.
+        /// </summary>
         public static Incident CreateNew(
             string incidentNumber,
             string title,
@@ -78,6 +80,51 @@ namespace IncidentOpsCenter.Domain.Entities
                 CreatedAtUtc = DateTime.UtcNow,
                 IsMajor = isMajor
             };
+        }
+
+        /// <summary>
+        /// Asigna o desasigna el incidente a un ingeniero de soporte.
+        /// </summary>
+        public void AssignTo(string? engineer)
+        {
+            AssignedTo = string.IsNullOrWhiteSpace(engineer)
+                ? null
+                : engineer.Trim();
+        }
+
+        /// <summary>
+        /// Cambia el estado del incidente, aplicando reglas simples de negocio.
+        /// </summary>
+        public void ChangeStatus(IncidentStatus newStatus)
+        {
+            // Regla simple: no se puede salir de Closed.
+            if (Status == IncidentStatus.Closed && newStatus != IncidentStatus.Closed)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot change status from {Status} to {newStatus}.");
+            }
+
+            Status = newStatus;
+
+            // Si pasa a Resolved, registramos la fecha de resolución.
+            if (Status == IncidentStatus.Resolved)
+            {
+                ResolvedAtUtc = DateTime.UtcNow;
+            }
+        }
+
+        /// <summary>
+        /// Cierra el incidente. Solo es válido si está previamente Resolved.
+        /// </summary>
+        public void Close()
+        {
+            if (Status != IncidentStatus.Resolved)
+            {
+                throw new InvalidOperationException(
+                    "Incident must be resolved before it can be closed.");
+            }
+
+            Status = IncidentStatus.Closed;
         }
     }
 }

@@ -1,11 +1,8 @@
-using IncidentOpsCenter.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+﻿using IncidentOpsCenter.Application.Interfaces;
 using IncidentOpsCenter.Application.Mapping;
-using IncidentOpsCenter.Application.Interfaces;
+using IncidentOpsCenter.Infrastructure.Persistence;
 using IncidentOpsCenter.Infrastructure.Services;
-
-
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,35 +15,20 @@ builder.Services.AddDbContext<IncidentOpsCenterDbContext>(options =>
     options.UseInMemoryDatabase("IncidentOpsCenterDb");
 });
 
-// AutoMapper v12
 builder.Services.AddAutoMapper(typeof(IncidentProfile).Assembly);
 
-// Services de consulta y comandos
 builder.Services.AddScoped<IIncidentQueryService, IncidentQueryService>();
 builder.Services.AddScoped<IIncidentCommandService, IncidentCommandService>();
 
-
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-
-
-
 var app = builder.Build();
-// Seed de datos iniciales en la base InMemory
+
+// ✅ Seed inicial InMemory usando DataSeeder
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<IncidentOpsCenterDbContext>();
-    DbInitializer.Seed(db);
+    DataSeeder.Seed(db); // <- NUEVO
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -54,9 +36,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

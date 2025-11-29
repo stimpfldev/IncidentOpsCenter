@@ -1,13 +1,11 @@
 ﻿using IncidentOpsCenter.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace IncidentOpsCenter.Infrastructure.Persistence
 {
     /// <summary>
     /// DbContext principal de la aplicación.
-    /// Por ahora lo usamos con InMemory, después podemos pasar a SQL Server.
+    /// Por ahora lo usamos con InMemory, luego se puede migrar a SQL Server.
     /// </summary>
     public class IncidentOpsCenterDbContext : DbContext
     {
@@ -17,7 +15,6 @@ namespace IncidentOpsCenter.Infrastructure.Persistence
         {
         }
 
-        // Representa la tabla de Incidents
         public DbSet<Incident> Incidents => Set<Incident>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

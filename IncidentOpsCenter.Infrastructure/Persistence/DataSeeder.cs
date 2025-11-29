@@ -1,15 +1,16 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using IncidentOpsCenter.Domain.Entities;
 using IncidentOpsCenter.Domain.Enums;
 
 namespace IncidentOpsCenter.Infrastructure.Persistence
 {
-    public static class DbInitializer
+    /// <summary>
+    /// Seeder simple para poblar la base InMemory con algunos incidentes iniciales.
+    /// </summary>
+    public static class DataSeeder
     {
         public static void Seed(IncidentOpsCenterDbContext context)
         {
-            // Si ya hay datos, no hacemos nada
             if (context.Incidents.Any())
                 return;
 
@@ -37,7 +38,6 @@ namespace IncidentOpsCenter.Infrastructure.Persistence
             );
 
             context.Incidents.AddRange(inc1, inc2);
-
             context.SaveChanges();
         }
     }

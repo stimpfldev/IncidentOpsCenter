@@ -50,7 +50,6 @@ namespace IncidentOpsCenter.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IncidentReadDto>> Create([FromBody] IncidentCreateDto dto)
         {
-            // Validación simple usando DataAnnotations
             if (!ModelState.IsValid)
             {
                 return ValidationProblem(ModelState);
@@ -58,11 +57,62 @@ namespace IncidentOpsCenter.Api.Controllers
 
             var created = await _incidentCommandService.CreateAsync(dto);
 
-            // Devolvemos 201 Created + Location con el GET por IncidentNumber
             return CreatedAtAction(
                 nameof(GetByIncidentNumber),
                 new { incidentNumber = created.IncidentNumber },
                 created);
+        }
+
+        // PATCH: api/incidents/{incidentNumber}/status
+        [HttpPatch("{incidentNumber}/status")]
+        [ProducesResponseType(typeof(IncidentReadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IncidentReadDto>> UpdateStatus(
+            string incidentNumber,
+            [FromBody] IncidentStatusUpdateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            try
+            {
+                var updated = await _incidentCommandService.UpdateStatusAsync(incidentNumber, dto);
+
+                if (updated is null)
+                    return NotFound();
+
+                return Ok(updated);
+            }
+            catch (System.InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return ValidationProblem(ModelState);
+            }
+        }
+
+        // PATCH: api/incidents/{incidentNumber}/assign
+        [HttpPatch("{incidentNumber}/assign")]
+        [ProducesResponseType(typeof(IncidentReadDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IncidentReadDto>> Assign(
+            string incidentNumber,
+            [FromBody] IncidentAssignDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            var updated = await _incidentCommandService.AssignAsync(incidentNumber, dto);
+
+            if (updated is null)
+                return NotFound();
+
+            return Ok(updated);
         }
     }
 }

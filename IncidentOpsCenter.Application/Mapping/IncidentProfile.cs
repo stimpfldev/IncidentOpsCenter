@@ -19,7 +19,7 @@ namespace IncidentOpsCenter.Application.Mapping
                 .ForMember(dest => dest.Status,
                     opt => opt.MapFrom(src => src.Status.ToString()))
                 .ForMember(dest => dest.CreatedAtUtc,
-                    opt => opt.MapFrom(src => src.CreatedAtUtc.ToString("O"))) // ISO 8601
+                    opt => opt.MapFrom(src => src.CreatedAtUtc.ToString("O")))
                 .ForMember(dest => dest.ResolvedAtUtc,
                     opt => opt.MapFrom(src =>
                         src.ResolvedAtUtc.HasValue
