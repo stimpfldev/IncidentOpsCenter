@@ -11,5 +11,6 @@ namespace IncidentOpsCenter.Application.Interfaces
     public interface IIncidentQueryService
     {
         Task<IReadOnlyList<IncidentReadDto>> GetAllAsync();
+        Task<IncidentReadDto?> GetByIncidentNumberAsync(string incidentNumber);
     }
 }

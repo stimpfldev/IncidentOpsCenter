@@ -6,6 +6,7 @@ using IncidentOpsCenter.Application.Interfaces;
 using IncidentOpsCenter.Infrastructure.Services;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -17,11 +18,12 @@ builder.Services.AddDbContext<IncidentOpsCenterDbContext>(options =>
     options.UseInMemoryDatabase("IncidentOpsCenterDb");
 });
 
-// AutoMapper (v12, con paquete de DI)
+// AutoMapper v12
 builder.Services.AddAutoMapper(typeof(IncidentProfile).Assembly);
 
-// Service de consulta de incidentes
+// Services de consulta y comandos
 builder.Services.AddScoped<IIncidentQueryService, IncidentQueryService>();
+builder.Services.AddScoped<IIncidentCommandService, IncidentCommandService>();
 
 
 
