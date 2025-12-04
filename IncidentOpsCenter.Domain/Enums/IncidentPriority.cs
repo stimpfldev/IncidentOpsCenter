@@ -1,6 +1,6 @@
 ﻿namespace IncidentOpsCenter.Domain.Enums
 {
-    // Prioridad = qué tan rápido debemos atenderlo
+    // La Prioridad define qué tan rápido debe ser atendido 
     public enum IncidentPriority
     {
         P3 = 1,   // Normal
