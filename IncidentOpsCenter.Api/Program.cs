@@ -22,11 +22,11 @@ builder.Services.AddScoped<IIncidentCommandService, IncidentCommandService>();
 
 var app = builder.Build();
 
-// ✅ Seed inicial InMemory usando DataSeeder
+// Seed inicial InMemory usando DataSeeder
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<IncidentOpsCenterDbContext>();
-    DataSeeder.Seed(db); // <- NUEVO
+    DataSeeder.Seed(db); // <- NUEVO - OJO buscar por ref 01
 }
 
 if (app.Environment.IsDevelopment())
