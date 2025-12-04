@@ -67,7 +67,7 @@ namespace IncidentOpsCenter.Tests.Infrastructure
             result.Priority.Should().Be(IncidentPriority.P1.ToString());
             result.AssignedTo.Should().Be("federico.stimpfl");
 
-            // Verificamos que quedó en la base
+            // Verifico que quedó en la base
             var inDb = await context.Incidents.SingleOrDefaultAsync(i => i.IncidentNumber == result.IncidentNumber);
             inDb.Should().NotBeNull();
         }
