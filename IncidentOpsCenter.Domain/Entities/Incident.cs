@@ -9,10 +9,10 @@ namespace IncidentOpsCenter.Domain.Entities
     /// </summary>
     public class Incident
     {
-        // Id interno de la entidad (clave primaria en la base de datos)
+        // Id interno de la entidad Ojo q es la clave primaria en la BD
         public Guid Id { get; set; }
 
-        // Identificador "visible" para el negocio, tipo INC-0001
+        // Identificador "visible" para el negocio, tipo INC-0001 etc..
         public string IncidentNumber { get; set; } = string.Empty;
 
         // Título corto que describa el problema
@@ -30,10 +30,10 @@ namespace IncidentOpsCenter.Domain.Entities
         // Estado actual del incidente dentro del flujo L2/L3
         public IncidentStatus Status { get; set; }
 
-        // Nombre del servicio / aplicación afectada (ej: BillingService, WebPortal)
+        // Nombre del servicio / aplicación afectada (ej. BillingService, WebPortal)
         public string ServiceName { get; set; } = string.Empty;
 
-        // Entorno afectado (ej: Production, UAT, PreProd)
+        // Entorno afectado (ej. Production, UAT, PreProd)
         public string Environment { get; set; } = "Production";
 
         // Usuario o sistema que reportó el incidente
@@ -106,7 +106,7 @@ namespace IncidentOpsCenter.Domain.Entities
 
             Status = newStatus;
 
-            // Si pasa a Resolved, registramos la fecha de resolución.
+            // Si pasa a Resolved, registro la fecha de resolución.
             if (Status == IncidentStatus.Resolved)
             {
                 ResolvedAtUtc = DateTime.UtcNow;
@@ -114,7 +114,7 @@ namespace IncidentOpsCenter.Domain.Entities
         }
 
         /// <summary>
-        /// Cierra el incidente. Solo es válido si está previamente Resolved.
+        /// Cierra el incidente. Solo válido si está previamente Resolved.
         /// </summary>
         public void Close()
         {
