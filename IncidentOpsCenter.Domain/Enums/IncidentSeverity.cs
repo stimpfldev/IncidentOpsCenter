@@ -1,6 +1,6 @@
 ﻿namespace IncidentOpsCenter.Domain.Enums
 {
-    // Severidad = impacto técnico / negocio del incidente
+    // Severidad se refiere al impacto técnico / negocio del incidente
     public enum IncidentSeverity
     {
         Low = 1,        // Impacto menor, workaround simple
